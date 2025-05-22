@@ -82,6 +82,17 @@ body {
 }
 .footer a { color: #fff; text-decoration: none; }
 
+.tabla-tarifas {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabla-tarifas th,
+.tabla-tarifas td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .navbar .menu {
     display: none;
