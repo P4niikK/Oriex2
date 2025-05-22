@@ -1,8 +1,8 @@
 function toggleMenu() {
   const menu = document.getElementById('menu');
-  if (menu.style.display === 'flex') {
+  if (menu && menu.style.display === 'flex') {
     menu.style.display = 'none';
-  } else {
+  } else if (menu) {
     menu.style.display = 'flex';
   }
 }
@@ -18,4 +18,49 @@ function cotizar() {
 function buscarGuia() {
   const guia = document.getElementById('guia').value;
   document.getElementById('track-result').textContent = `Estado de la guía ${guia}: En preparación (demo)`;
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const email = document.getElementById('register-email').value;
+  const password = document.getElementById('register-password').value;
+  const resp = await fetch('/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await resp.json();
+  const msg = document.getElementById('register-msg');
+  if (resp.ok) {
+    msg.textContent = 'Registro exitoso, puedes iniciar sesión.';
+  } else {
+    msg.textContent = data.error || 'Error al registrarse';
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const resp = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await resp.json();
+  const msg = document.getElementById('login-msg');
+  if (resp.ok) {
+    msg.textContent = 'Ingreso exitoso';
+    localStorage.setItem('token', data.token);
+  } else {
+    msg.textContent = data.error || 'Credenciales inválidas';
+  }
+}
+
+if (document.getElementById('register-form')) {
+  document.getElementById('register-form').addEventListener('submit', handleRegister);
+}
+
+if (document.getElementById('login-form')) {
+  document.getElementById('login-form').addEventListener('submit', handleLogin);
 }
